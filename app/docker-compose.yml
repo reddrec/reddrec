@@ -1,15 +1,16 @@
 version: '3'
 services:
-  app:
+  reddrec:
     build: .
     ports:
       - "5000:5000"
     depends_on:
       - redis
+      - rqworker
     volumes:
-      - ./src:/app
+      - .:/app
     environment:
-      FLASK_APP: 'main/app.py'
+      FLASK_APP: 'reddrec'
       FLASK_RUN_HOST: '0.0.0.0'
       FLASK_ENV: 'development'
     command: 'flask run'
@@ -23,8 +24,14 @@ services:
   rqworker:
     build: .
     depends_on:
-      - app
       - redis
     volumes:
-      - ./src:/app
+      - .:/app
     command: 'rq worker --url redis://:@redis:6379'
+  test:
+    build: .
+    volumes:
+      - .:/app
+    depends_on:
+      - reddrec
+    command: 'python -m pytest'

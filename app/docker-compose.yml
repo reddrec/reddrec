@@ -1,0 +1,19 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - redis
+    volumes:
+      - ./src:/app
+    environment:
+      FLASK_ENV: development
+  redis:
+    image: redis:5.0.8
+  rcli:
+    image: redis:5.0.8
+    links:
+      - redis
+    command: 'sh -c "redis-cli -h redis"'

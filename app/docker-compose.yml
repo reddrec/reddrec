@@ -9,11 +9,22 @@ services:
     volumes:
       - ./src:/app
     environment:
-      FLASK_ENV: development
+      FLASK_APP: 'main/app.py'
+      FLASK_RUN_HOST: '0.0.0.0'
+      FLASK_ENV: 'development'
+    command: 'flask run'
   redis:
     image: redis:5.0.8
   rcli:
     image: redis:5.0.8
-    links:
+    depends_on:
       - redis
-    command: 'sh -c "redis-cli -h redis"'
+    command: 'redis-cli -h redis'
+  rqworker:
+    build: .
+    depends_on:
+      - app
+      - redis
+    volumes:
+      - ./src:/app
+    command: 'rq worker --url redis://:@redis:6379'

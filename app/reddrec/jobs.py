@@ -25,7 +25,7 @@ def process_job(username):
     Completed jobs contain recommendation data.
     """
 
-    cached = redis_conn.get(f"cached-response:{username}")
+    cached = redis_conn.get(f'cached-response:{username}')
 
     if cached:
         return Job(JobStatus.COMPLETED, cached)
@@ -36,7 +36,7 @@ def process_job(username):
 
         # Convert job result to json and enqueue it in cache
         json = dumps(rq_job.result)
-        redis_conn.put(f"cached-response:{username}", json)
+        redis_conn.put(f'cached-response:{username}', json)
         return Job(JobStatus.COMPLETED, json)
 
     return Job(status)
@@ -49,11 +49,11 @@ def fake_rq_request_job(username):
     import random
 
     fake_data = {
-        "username": username,
-        "recommendations": [
-            {"subreddit": "xbox", "confidence": random.random()},
-            {"subreddit": "ps4",  "confidence": random.random()},
-            {"subreddit": "pc",   "confidence": random.random()},
+        'username': username,
+        'recommendations': [
+            {'subreddit': 'xbox', 'confidence': random.random()},
+            {'subreddit': 'ps4',  'confidence': random.random()},
+            {'subreddit': 'pc',   'confidence': random.random()},
         ]
     }
 

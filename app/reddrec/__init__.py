@@ -27,9 +27,7 @@ def recommend(username):
     username = username.lower()
 
     if not valid_username(username):
-        return jsonify({
-            "error": "Invalid Reddit username."
-        }), 400
+        return jsonify(error='Invalid Reddit username.'), 400
 
     # Perform async job processing or get cached recommendations.
     job = process_job(username)
@@ -42,9 +40,9 @@ def recommend(username):
         return response
 
     elif job.status is JobStatus.PROCESSING:
-        return jsonify(status="Fetching your recommendations."), 202
+        return jsonify(status='Fetching your recommendations.'), 202
 
     elif job.status is JobStatus.FAILED_USER_NOT_FOUND:
-        return jsonify(error="We couldn't find that Redditor"), 404
+        return jsonify(error='We couldn\'t find that Redditor'), 404
 
-    return jsonify(error="Job failed, please try again later."), 500
+    return jsonify(error='Job failed, please try again later.'), 500

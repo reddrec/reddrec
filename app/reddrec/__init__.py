@@ -33,7 +33,6 @@ def recommend(username):
     job = process_job(username)
 
     if job.status is JobStatus.COMPLETED:
-
         # Don't use jsonify here since job.data is already a json string
         response = make_response(job.data, 200)
         response.headers['Content-Type'] = 'application/json'
@@ -42,7 +41,7 @@ def recommend(username):
     elif job.status is JobStatus.PROCESSING:
         return jsonify(status='Fetching your recommendations.'), 202
 
-    elif job.status is JobStatus.FAILED_USER_NOT_FOUND:
-        return jsonify(error='We couldn\'t find that Redditor'), 404
+    elif job.status is JobStatus.FAILED_CANNOT_RECOMMEND_USER:
+        return jsonify(error='We can\'t find enough data for that Redditor.'), 404
 
     return jsonify(error='Job failed, please try again later.'), 500

@@ -4,22 +4,22 @@ This is the root of the Reddrec web application.
 
 Requirements: [Docker](https://www.docker.com/get-started)
 
-Building and running:
+## Building:
 
 ```
-docker-compose up --build
-
-# Open http://localhost:5000 in your browser
+docker-compose build
 ```
 
-Running tests:
+## Running:
+
+```
+docker-compose up reddrec
+```
+
+Development mode server will be live at [localhost:5000](http://localhost:5000).
+
+## Testing:
 
 ```
 docker-compose run test
-```
-
-Running (most often, unless you have to install a new dep):
-
-```
-docker-compose up
 ```

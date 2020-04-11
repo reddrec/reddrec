@@ -33,6 +33,4 @@ services:
     build: .
     volumes:
       - .:/app
-    depends_on:
-      - reddrec
     command: 'python -m pytest'

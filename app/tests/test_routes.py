@@ -1,10 +1,4 @@
-import pytest
 from flask.json import dumps, loads
-from reddrec import app
-
-@pytest.fixture
-def client():
-    return app.test_client()
 
 def test_index(client):
     rv = client.get('/')
@@ -19,8 +13,17 @@ def test_recommend_bad_username(client):
     json = loads(rv.data)
     assert 'error' in json
 
-def test_recommend_is_processing(client):
+def test_recommend_is_completed(client):
     rv = client.get('/recommend/GabeNewellBellevue')
+
+    assert rv.headers['Content-Type'] == 'application/json'
+    assert rv.status_code == 200
+
+    json = loads(rv.data)
+    assert json['username'] == 'gabenewellbellevue'
+
+def test_recommend_is_processing(async_client):
+    rv = async_client.get('/recommend/spez')
 
     assert rv.headers['Content-Type'] == 'application/json'
     assert rv.status_code == 202

@@ -1,4 +1,3 @@
-import pytest
 from reddrec.validation import valid_username
 
 def test_valid_username():

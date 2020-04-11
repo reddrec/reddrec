@@ -1,4 +1,6 @@
 from enum import Enum
+from fakeredis import FakeStrictRedis
+from flask import current_app
 from flask.json import dumps
 from reddrec.recommender import recommend
 from redis import Redis
@@ -6,9 +8,6 @@ from rq import Queue
 
 # Store processed results for 6 hours
 RESULTS_TTL = 6 * 60 * 60
-
-redis_conn = Redis(host='redis', port=6379)
-queue = Queue(connection=redis_conn)
 
 class JobStatus(Enum):
     PROCESSING = 1
@@ -36,6 +35,31 @@ def result_key(username):
 
     return f'reddrec:result:{username.lower()}'
 
+def get_redis_and_queue():
+    """
+    We need to mock redis and rq when we test. Sadly this means we have to mix
+    test code with the app, but it works for us.
+
+    Returns tuple of (redis, q)
+    """
+
+    if current_app.config.get('testing'):
+        redis_conn = FakeStrictRedis()
+
+        # A good default for tests is to have a synchronous blocking queue,
+        # unless we want to test the behavior of waiting for a task to be
+        # processed. Some tests might explicitly set `testing.async_queue` to
+        # enable normal production behavior.
+        async_queue = current_app.config.get('testing.async_queue')
+        queue = Queue(is_async=async_queue, connection=redis_conn)
+
+        return redis_conn, queue
+
+    redis_conn = Redis(host='redis', port=6379)
+    queue = Queue(connection=redis_conn)
+
+    return redis_conn, queue
+
 def process_job(username):
     """
     Handles async job processing for given user.
@@ -44,12 +68,15 @@ def process_job(username):
     Completed jobs contain recommendation data.
     """
 
+    redis_conn, queue = get_redis_and_queue()
+
     cached = redis_conn.get(result_key(username))
 
     if cached:
         return Job(JobStatus.COMPLETED, cached)
 
     rq_job = queue.fetch_job(job_id(username))
+
     if not rq_job:
         rq_job = queue.enqueue(recommend, username, job_id=job_id(username))
 

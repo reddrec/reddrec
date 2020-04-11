@@ -19,12 +19,12 @@ def recommend(username):
         ]
     }
 
-    time.sleep(3)
+    # time.sleep(3)
 
-    if random.random() < 0.5:
-        raise Exception('recommend: fake exception')
+    # if random.random() < 0.5:
+        # raise Exception('recommend: fake exception')
 
-    if random.random() < 0.5:
-        return None # signifies 'cannot recommend'
+    # if random.random() < 0.5:
+        # return None # signifies 'cannot recommend'
 
     return fake_data

@@ -1,16 +1,14 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './App.css'
 
 function Search() {
   return (
-
     <form className="Search">
       <label className="search-box">
         <input className="search-input" id="search" type="text" placeholder="Username" />
       </label>
       {/* <input className="okButton" type="submit" value="Ok" /> */}
     </form>
-    
   )
 }
 
@@ -24,6 +22,8 @@ function Recommendation(props){
 }
 
 function App() {
+  const [data, setData] = useState({ hits: [] })
+
   let recommendations = [
     {
       subreddit: "animalcrossing",
@@ -39,9 +39,9 @@ function App() {
     }
   ]
 
-
-
-  let recommendationComponents = recommendations.map((item, i) => <Recommendation key={i} {...item} />)
+  let recommendationComponents = recommendations.map((item, i) => 
+    <Recommendation key={i} {...item} />
+  )
   
   return (
     <div className="App">

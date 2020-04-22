@@ -7,8 +7,14 @@ Requirements: [Docker](https://www.docker.com/get-started), [Nodejs](https://nod
 ## Building:
 
 ```
-pushd webpage; npm run build; popd; # Build React frontend
-docker-compose build # Everything else
+# Build React frontend
+pushd webpage
+npm install
+npm run build
+popd
+
+# Everything else
+docker-compose build
 ```
 
 Note that you should run `npm run build` in the `webpage/` directory every time that you want to update the React build served by Flask. Could be Dockerized in future.

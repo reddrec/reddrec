@@ -2,13 +2,22 @@
 
 This is the root of the Reddrec web application.
 
-Requirements: [Docker](https://www.docker.com/get-started)
+Requirements: [Docker](https://www.docker.com/get-started), [Nodejs](https://nodejs.org/en/)
 
 ## Building:
 
 ```
+# Build React frontend
+pushd webpage
+npm install
+npm run build
+popd
+
+# Everything else
 docker-compose build
 ```
+
+Note that you should run `npm run build` in the `webpage/` directory every time that you want to update the React build served by Flask. Could be Dockerized in future.
 
 ## Running:
 

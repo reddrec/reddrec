@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, make_response
+from flask import Blueprint, jsonify, make_response, render_template
 from reddrec.jobs import process_job, JobStatus
 from reddrec.validation import valid_username
 
@@ -6,7 +6,7 @@ bp = Blueprint('routes', __name__)
 
 @bp.route('/')
 def index():
-    return 'Hello recommender system!\nTODO: serve static assets'
+    return render_template('index.html')
 
 @bp.route('/recommend/<username>')
 def recommend(username):

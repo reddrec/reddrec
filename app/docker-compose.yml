@@ -33,4 +33,4 @@ services:
     build: .
     volumes:
       - .:/app
-    command: 'python -m pytest'
+    command: 'python -m pytest tests/'

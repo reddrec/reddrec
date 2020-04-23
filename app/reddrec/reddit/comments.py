@@ -8,5 +8,4 @@ class Comments:
         self.user = reddit.redditor(username)
 
     def fetch_recent(self, n=100):
-        print
-        pass
+        return list(self.user.comments.new(limit=n))

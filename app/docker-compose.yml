@@ -34,3 +34,11 @@ services:
     volumes:
       - .:/app
     command: 'python -m pytest tests/'
+    environment:
+      - prawtest_client_id
+      - prawtest_client_secret
+      - prawtest_password
+      - prawtest_test_subreddit
+      - prawtest_username
+      - prawtest_user_agent
+      - prawtest_refresh_token

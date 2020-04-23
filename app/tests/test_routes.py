@@ -2,7 +2,9 @@ from flask.json import dumps, loads
 
 def test_index(client):
     rv = client.get('/')
-    assert b'Hello recommender system!' in rv.data
+
+    # Check for React root element
+    assert b'<div id="root"></div>' in rv.data
 
 def test_recommend_bad_username(client):
     rv = client.get('/recommend/Y*A(DS')

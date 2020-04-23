@@ -1,4 +1,5 @@
 import pytest
+from betamax import Betamax
 from reddrec import create_app
 
 @pytest.fixture
@@ -13,4 +14,3 @@ def async_client():
         'testing.async_queue': True
     })
     return app.test_client()
-

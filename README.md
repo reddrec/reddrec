@@ -29,6 +29,22 @@ Development mode server will be live at [localhost:5000](http://localhost:5000).
 
 ## Testing:
 
+Initial setup requires some environment variables ([source: praw docs](https://praw.readthedocs.io/en/latest/package_info/contributing.html?highlight=testing#adding-and-updating-integration-tests)):
+
+```bash
+export prawtest_client_id=myclientid
+export prawtest_client_secret=myclientsecret
+export prawtest_password=mypassword
+export prawtest_test_subreddit=reddit_api_test
+export prawtest_username=myusername
+export prawtest_user_agent='reddrec-bot (integration test)'
+
+# Optional (use in place of username & password):
+# export prawtest_refresh_token=myrefreshtoken
+```
+
+We now test with:
+
 ```
 docker-compose run test
 ```

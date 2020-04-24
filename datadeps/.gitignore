@@ -1,0 +1,3 @@
+# Output directory for serialized datadeps
+# Is populated by running main script
+gen/

@@ -1,0 +1,3 @@
+# `COPY . .` command takes forever w/o this b/c of node_modules folder.
+# In future we should have better solution.
+webpage

@@ -27,6 +27,11 @@ services:
       FLASK_APP: 'reddrec'
       FLASK_RUN_HOST: '0.0.0.0'
       FLASK_ENV: 'development'
+      reddrec_praw_client_id: null
+      reddrec_praw_client_secret: null
+      reddrec_praw_username: null
+      reddrec_praw_password: null
+      reddrec_praw_user_agent: null
     command: bash -c 'python datadeps && flask run'
   redis:
     image: redis:5.0.8
@@ -42,6 +47,12 @@ services:
     volumes:
       - .:/app
     command: bash -c 'python datadeps && rq worker --url redis://:@redis:6379'
+    environment:
+      - reddrec_praw_client_id
+      - reddrec_praw_client_secret
+      - reddrec_praw_username
+      - reddrec_praw_password
+      - reddrec_praw_user_agent
   test:
     build: .
     volumes:
@@ -50,8 +61,6 @@ services:
     environment:
       - prawtest_client_id
       - prawtest_client_secret
-      - prawtest_password
-      - prawtest_test_subreddit
       - prawtest_username
+      - prawtest_password
       - prawtest_user_agent
-      - prawtest_refresh_token

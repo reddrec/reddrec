@@ -26,6 +26,7 @@ def test_recommend_is_completed(i9n, client):
 
         json = loads(rv.data)
         assert json['username'] == 'gabenewellbellevue'
+        assert len(json['recommendations']) == 3
 
 def test_recommend_is_processing(i9n, async_client):
     with i9n.recorder.use_cassette('Routes.recommend_is_processing'):

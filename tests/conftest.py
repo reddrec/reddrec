@@ -2,22 +2,23 @@ import pytest
 import tests.praw.integration as praw_i9n
 from reddrec import create_app
 
-def test_config():
+@pytest.fixture
+def test_config(i9n):
     return {
         'testing': True,
         'datadeps': {},
+        'prawtest_reddit': i9n.reddit
     }
 
 @pytest.fixture
-def client():
-    app = create_app(test_config=test_config())
+def client(test_config):
+    app = create_app(test_config=test_config)
     return app.test_client()
 
 @pytest.fixture
-def async_client():
-    conf = test_config()
-    conf['testing.async_queue'] = True
-    app = create_app(test_config=conf)
+def async_client(test_config):
+    test_config['testing.async_queue'] = True
+    app = create_app(test_config=test_config)
     return app.test_client()
 
 @pytest.fixture

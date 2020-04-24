@@ -2,17 +2,22 @@ import pytest
 import tests.praw.integration as praw_i9n
 from reddrec import create_app
 
+def test_config():
+    return {
+        'testing': True,
+        'datadeps': {},
+    }
+
 @pytest.fixture
 def client():
-    app = create_app(test_config={'testing': True})
+    app = create_app(test_config=test_config())
     return app.test_client()
 
 @pytest.fixture
 def async_client():
-    app = create_app(test_config={
-        'testing': True,
-        'testing.async_queue': True
-    })
+    conf = test_config()
+    conf['testing.async_queue'] = True
+    app = create_app(test_config=conf)
     return app.test_client()
 
 @pytest.fixture

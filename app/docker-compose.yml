@@ -1,3 +1,16 @@
+# TODO:
+# Current issue is that we have to run `python datadeps` before every service
+# execution. This is not ideal obviously, and it would be best if we can put
+# that in our Dockerfile.
+# -
+# Why this debt exists: CMD and RUN in Dockerfile was not updating.
+# -
+# Ideal situation: python datadeps should not mess with dev build, and it would
+# be great it we can run it in a separate volume that only the docker containers
+# can access. Even better if we can do this for our `npm run build` step, as
+# that would mean we can completely separate build artifacts from a dev's
+# filesystem.
+
 version: '3'
 services:
   reddrec:
@@ -14,7 +27,7 @@ services:
       FLASK_APP: 'reddrec'
       FLASK_RUN_HOST: '0.0.0.0'
       FLASK_ENV: 'development'
-    command: 'flask run'
+    command: bash -c 'python datadeps && flask run'
   redis:
     image: redis:5.0.8
   rcli:
@@ -28,12 +41,12 @@ services:
       - redis
     volumes:
       - .:/app
-    command: 'rq worker --url redis://:@redis:6379'
+    command: bash -c 'python datadeps && rq worker --url redis://:@redis:6379'
   test:
     build: .
     volumes:
       - .:/app
-    command: 'python -m pytest tests/'
+    command: bash -c 'python datadeps && python -m pytest tests/'
     environment:
       - prawtest_client_id
       - prawtest_client_secret

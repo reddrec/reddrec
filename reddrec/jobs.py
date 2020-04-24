@@ -1,7 +1,7 @@
 from enum import Enum
 from fakeredis import FakeStrictRedis
-from flask import current_app
 from flask.json import dumps
+from reddrec.utils import is_flask_in_testing_mode
 from reddrec.recommender import recommend
 from redis import Redis
 from rq import Queue
@@ -43,13 +43,14 @@ def get_redis_and_queue():
     Returns tuple of (redis, q)
     """
 
-    if current_app.config.get('testing'):
+    if is_flask_in_testing_mode():
         redis_conn = FakeStrictRedis()
 
         # A good default for tests is to have a synchronous blocking queue,
         # unless we want to test the behavior of waiting for a task to be
         # processed. Some tests might explicitly set `testing.async_queue` to
         # enable normal production behavior.
+        from flask import current_app
         async_queue = current_app.config.get('testing.async_queue')
         queue = Queue(is_async=async_queue, connection=redis_conn)
 
@@ -78,7 +79,8 @@ def process_job(username):
     rq_job = queue.fetch_job(job_id(username))
 
     if not rq_job:
-        rq_job = queue.enqueue(recommend, username, job_id=job_id(username))
+        testing = is_flask_in_testing_mode()
+        rq_job = queue.enqueue(recommend, username, testing, job_id=job_id(username))
 
     if rq_job.is_finished:
         if rq_job.result is None:

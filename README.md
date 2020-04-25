@@ -2,7 +2,7 @@
 
 Reddrec is a web app that provides subreddit recommendations.
 
-[![<Reddrec>](https://circleci.com/gh/reddrec/reddrec/tree/master.svg?style=shield)](<LINK>)
+[![circleci badge](https://circleci.com/gh/reddrec/reddrec/tree/master.svg?style=shield)](https://circleci.com/gh/reddrec/reddrec)
 
 ## Initial setup
 
@@ -11,6 +11,8 @@ Reddrec is super simple to build and run. A little initial setup makes things ez
 First let's get the following: [Docker](https://www.docker.com/get-started), [Nodejs](https://nodejs.org/en/), [a Reddit account](https://www.reddit.com/)
 
 Next we'll create a new Reddit developer app (it's free): [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps/). Create a "script" app as we are not using refresh tokens yet. In the future we will use the proper "web app" scopes.
+
+![reddit app help](./docs/assets/reddit-app-help.png)
 
 Finally we need to add our Reddit secrets to our environment. We recommend having these at login in your `.bash_profile` (or similar):
 
@@ -29,6 +31,9 @@ export prawtest_username='test-username-replace-me'
 export prawtest_password='test-p4ssw0rd-replace-me'
 export prawtest_user_agent='github.com/reddrec (integration test)'
 ```
+
+Feel free to leave the user agent as-is. Don't spoof a browser as that's against Reddit's API terms. If you fork Reddrec, we ask that you change the user agent string to reflect your fork.
+
 [see: praw docs](https://praw.readthedocs.io/en/latest/package_info/contributing.html?highlight=testing#adding-and-updating-integration-tests)
 
 ## Building

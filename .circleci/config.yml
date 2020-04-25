@@ -12,11 +12,6 @@ jobs:
             pip install -r requirements.txt
             python datadeps
             python -m pytest tests/
-      - store_test_results:
-          path: test-results
-      - store_artifacts:
-          path: test-results
-          destination: tr1
 workflows:
   main:
     jobs:

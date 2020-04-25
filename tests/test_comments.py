@@ -1,4 +1,4 @@
-from reddrec.reddit.comments import Comments
+from reddrec.comments import Comments
 import numpy as np
 
 def test_fetch_recent(i9n):

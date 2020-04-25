@@ -1,6 +1,6 @@
 import praw
 import numpy as np
-from reddrec.data_deps import DataDeps
+from .data_deps import DataDeps
 
 class Comments:
 

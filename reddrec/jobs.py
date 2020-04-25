@@ -1,10 +1,10 @@
 from enum import Enum
 from fakeredis import FakeStrictRedis
 from flask.json import dumps
-from reddrec.utils import is_flask_in_testing_mode
-from reddrec.recommender import recommend
 from redis import Redis
 from rq import Queue
+from .utils import is_flask_in_testing_mode
+from .recommender import recommend
 
 # Store processed results for 6 hours
 RESULTS_TTL = 6 * 60 * 60

@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, make_response, render_template
-from reddrec.jobs import process_job, JobStatus
-from reddrec.validation import valid_username
+from .jobs import process_job, JobStatus
+from .validation import valid_username
 
 bp = Blueprint('routes', __name__)
 

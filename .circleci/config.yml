@@ -8,9 +8,9 @@ jobs:
       - run:
           name: Python tests
           command: |
-          pip install -r requirements.txt
-          python datadeps
-          python -m pytest tests/
+            pip install -r requirements.txt
+            python datadeps
+            python -m pytest tests/
 
 workflows:
   main:

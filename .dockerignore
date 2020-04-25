@@ -1,3 +1,2 @@
-# `COPY . .` command takes forever w/o this b/c of node_modules folder.
-# In future we should have better solution.
+# Frontend is separated out of Docker as it's just easier w/o it.
 webpage

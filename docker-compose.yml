@@ -1,16 +1,3 @@
-# TODO:
-# Current issue is that we have to run `python datadeps` before every service
-# execution. This is not ideal obviously, and it would be best if we can put
-# that in our Dockerfile.
-# -
-# Why this debt exists: CMD and RUN in Dockerfile was not updating.
-# -
-# Ideal situation: python datadeps should not mess with dev build, and it would
-# be great it we can run it in a separate volume that only the docker containers
-# can access. Even better if we can do this for our `npm run build` step, as
-# that would mean we can completely separate build artifacts from a dev's
-# filesystem.
-
 version: '3'
 services:
   reddrec:
@@ -23,16 +10,16 @@ services:
     volumes:
       - .:/app
     environment:
-      PYTHONUNBUFFERED: 'true'
-      FLASK_APP: 'reddrec'
-      FLASK_RUN_HOST: '0.0.0.0'
-      FLASK_ENV: 'development'
-      reddrec_praw_client_id: null
-      reddrec_praw_client_secret: null
-      reddrec_praw_username: null
-      reddrec_praw_password: null
-      reddrec_praw_user_agent: null
-    command: bash -c 'python datadeps && flask run'
+      - 'PYTHONUNBUFFERED=true'
+      - 'FLASK_APP=reddrec'
+      - 'FLASK_RUN_HOST=0.0.0.0'
+      - 'FLASK_ENV=development'
+      - reddrec_praw_client_id
+      - reddrec_praw_client_secret
+      - reddrec_praw_username
+      - reddrec_praw_password
+      - reddrec_praw_user_agent
+    command: bash -c 'flask run'
   redis:
     image: redis:5.0.8
   rcli:
@@ -46,7 +33,7 @@ services:
       - redis
     volumes:
       - .:/app
-    command: bash -c 'python datadeps && rq worker --url redis://:@redis:6379'
+    command: bash -c 'rq worker --url redis://:@redis:6379'
     environment:
       - reddrec_praw_client_id
       - reddrec_praw_client_secret
@@ -57,10 +44,15 @@ services:
     build: .
     volumes:
       - .:/app
-    command: bash -c 'python datadeps && python -m pytest tests/'
+    command: bash -c 'python -m pytest tests/'
     environment:
       - prawtest_client_id
       - prawtest_client_secret
       - prawtest_username
       - prawtest_password
       - prawtest_user_agent
+  refresh_datadeps:
+    build: .
+    volumes:
+      - .:/app
+    command: 'python datadeps -retry'

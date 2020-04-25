@@ -4,10 +4,6 @@ from reddrec.validation import valid_username
 
 bp = Blueprint('routes', __name__)
 
-@bp.route('/')
-def index():
-    return render_template('index.html')
-
 @bp.route('/recommend/<username>')
 def recommend(username):
     """

@@ -8,7 +8,7 @@ Reddrec is super simple to build and run. A little initial setup makes things ez
 
 First let's get the following: [Docker](https://www.docker.com/get-started), [Nodejs](https://nodejs.org/en/), [a Reddit account](https://www.reddit.com/)
 
-Next we'll create a new Reddit developer app (it's free): [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps/)
+Next we'll create a new Reddit developer app (it's free): [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps/). Create a "script" app as we are not using refresh tokens yet. In the future we will use the proper "web app" scopes.
 
 Finally we need to add our Reddit secrets to our environment. We recommend having these at login in your `.bash_profile` (or similar):
 
@@ -32,38 +32,32 @@ export prawtest_user_agent='github.com/reddrec (integration test)'
 ## Building
 
 ```
-# Build React frontend
-pushd webpage
-npm install
-npm run build
-popd
-
-# Everything else
 docker-compose build
+(cd webpage; npm install)
 ```
 
-Building takes a few minutes.
-
-_n.b.: Run `npm run build` in the `webpage` directory whenever you need to update the webpage. Technically you can use `npm start` but it will not connect with Flask and things will be broken. We'd like to get rid of this step in the future (and have auto-update behavior) since this extra step is annoying. Ideally we should move all Nodejs stuff into Docker._
+Building can take a few minutes. Source code will live-update when running, so
+you generally only have to re-build when installing a new dependency.
 
 ## Running
 
 ```
-docker-compose up reddrec
+docker-compose up -d reddrec
+(cd webpage; npm start)
 ```
 
-Development mode server will be live at [localhost:5000](http://localhost:5000).
+Frontend (React) goes live at [localhost:3000](http://localhost:3000). Requests for `/recommend` are proxied to the backend.
+
+Backend (Flask api) goes live at [localhost:5000](http://localhost:5000).
+
+View live logs:
+
+```
+docker-compose logs -f
+```
 
 ## Testing
 
-Run all tests with:
-
 ```
 docker-compose run test
-```
-
-You can also launch a Redis client (while the app is running) for debug purposes:
-
-```
-docker-compose run rcli
 ```

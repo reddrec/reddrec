@@ -1,12 +1,5 @@
 from flask.json import dumps, loads
 
-def test_index(i9n, client):
-    with i9n.recorder.use_cassette('Routes.index'):
-        rv = client.get('/')
-
-        # Check for React root element
-        assert b'<div id="root"></div>' in rv.data
-
 def test_recommend_bad_username(i9n, client):
     with i9n.recorder.use_cassette('Routes.recommend_bad_username'):
         rv = client.get('/recommend/Y*A(DS')

@@ -2,6 +2,8 @@
 
 Reddrec is a web app that provides subreddit recommendations.
 
+[![<Reddrec>](https://circleci.com/gh/reddrec/reddrec/tree/master.svg?style=shield)](<LINK>)
+
 ## Initial setup
 
 Reddrec is super simple to build and run. A little initial setup makes things ez-pz.

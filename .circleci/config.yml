@@ -2,16 +2,21 @@ version: 2.1
 
 jobs:
   build-and-test:
-    executor: python/default
+    docker:
+      - image: circleci/python:3.7
     steps:
       - checkout
       - run:
           name: Python tests
           command: |
-          pip install -r requirements.txt
-          python datadeps
-          python -m pytest tests/
-
+            pip install -r requirements.txt
+            python datadeps
+            python -m pytest tests/
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
+          destination: tr1
 workflows:
   main:
     jobs:

@@ -11,6 +11,19 @@ const fetchRecommendations = (username) => {
     return (dispatch) => {
         dispatch(performRequest(username))
         axios.get(`/recommend/${username}`)
+            .then(response => {
+                switch (response.status) {
+                    case 200:
+                        dispatch(gotResults(response.data))
+                        break
+                    case 202:
+                        const retry = fetchRecommendations(username)
+                        setTimeout(() => dispatch(retry), REFRESH_TIME_MS)
+                        break
+                    default:
+                        throwUnknownResp(response)
+                }
+            })
             .catch(error => {
                 if (!error.response) {
                     dispatch(apiError('Connection issue?', 'Please try again later.'))
@@ -20,7 +33,7 @@ const fetchRecommendations = (username) => {
                 let cause
                 const response = error.response
 
-                switch (response.code) {
+                switch (response.status) {
                     case 404:
                         cause = 'Not Found'
                         break
@@ -35,19 +48,6 @@ const fetchRecommendations = (username) => {
                 }
 
                 dispatch(apiError(cause, response.data.error))
-            })
-            .then(response => {
-                switch (response.status) {
-                    case 200:
-                        dispatch(gotResults(response.data))
-                        break
-                    case 202:
-                        const retry = fetchRecommendations(username)
-                        setTimeout(() => dispatch(retry), REFRESH_TIME_MS)
-                        break
-                    default:
-                        throwUnknownResp(response)
-                }
             })
     }
 }

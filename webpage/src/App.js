@@ -1,18 +1,40 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
+import {useSelector, useDispatch} from 'react-redux'
 import fetchRecommendations from './recommendations'
-import axios from 'axios'
 import './App.css'
 
-// const Search = () => {
-//   return (
-//     <form className="Search">
-//       <label className="search-box">
-//         <input className="search-input" id="search" type="text" placeholder="Username" />
-//       </label>
-//       {/* <input className="okButton" type="submit" value="Ok" /> */}
-//     </form>
-//   )
-// }
+
+const Search = () => {
+  const [query, setQuery] = useState('jess2187')
+  const dispatch = useDispatch()
+  
+  return (
+    <form className="Search" 
+        onSubmit={event => {
+          dispatch(fetchRecommendations(query)) 
+          event.preventDefault()
+      }}>
+        <div className="SearchBox">
+          <input
+            className="SearchInput"
+            type="text"
+            value = {query}
+            placeholder="Username"
+            onChange={event => setQuery(event.target.value)}
+          />
+        </div>
+      </form>
+  )
+}
+
+
+const Recommendations = (props) => {
+  return (
+    props.recs && props.recs.recommendations.map((item, i) => (
+      <Recommendation key ={i} subreddit={item.subreddit} confidence={item.confidence} />
+    ))
+  )
+}
 
 const Recommendation = (props) => {
   return (
@@ -23,70 +45,45 @@ const Recommendation = (props) => {
   )
 }
 
-const App = () => {
-  const [data, setData] = useState(0)
-  const [query, setQuery] = useState('jess2187')
-  const [url, setUrl] = useState(
-    '/recommend/jess2187',
+const Error = (props) => {
+  return (
+    <div>
+      <h3>Something went wrong :(</h3>
+    </div>
   )
-  const [isLoading, setIsLoading] = useState(false)
-  const [isError, setIsError] = useState(false)
+}
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsError(false)
-      setIsLoading(true)
-      try {
-        const result = await axios(url)
-        setData(result.data)
-      } catch (error) {
-        setIsError(true)
-      }
-      setIsLoading(false)
-    };
-    fetchData()
-  }, [url])
-  
+const App = () => {
+  const [query, setQuery] = useState('jess2187')
+
+  const isLoading = useSelector(state => state.loading)
+  const isError = useSelector(state => state.error)
+  const username = useSelector(state => state.username)
+  const recommendations = useSelector(state => state.recommendations)
+
+  const dispatch = useDispatch()
+
   return (
     <div className="App">
       <div className="Header">
-        <h1>Reddit Recommender</h1>
+        <h1>Reddrec</h1>
         <p>Find new gaming subreddits!</p>
       </div>
-      <div className="Search">
-        <div className="search-box">
-          <input
-            className="search-input"
-            type="text"
-            value={query}
-            placeholder="Username"
-            onChange={event => setQuery(event.target.value)}
-          />
-        </div>
-        <input 
-          className="okButton" 
-          type="submit" 
-          value="Ok" 
-          onClick={() =>
-            setUrl(`/recommend/${query}`)
-          }/>
-      </div>
-
-      {isError && <div>Something went wrong ...</div>}
+      <Search/>
       
-      { isLoading ? (
-        <div>Loading ...</div>
-      ) : (
-        <div>
-          {/* {data.recommendations.map(item => (
-            <Recommendation subreddit={item.subreddit} confidence={item.confidence} />
-          ))} */}
-          {console.log(data)}
-        </div>
-      )}
+      <div>  
+        {isError && <Error/>}
 
-      {/* <img src='./loading.gif' className="App-logo" alt="logo" /> */}
-      {/* {recommendationComponents} */}
+        { isLoading ? (
+          <div>Loading ...</div>
+        ) : (
+          <div>
+            <Recommendations recs={recommendations} />
+            {console.log(recommendations)}
+          </div>
+        )}
+
+      </div>
     </div>
   )
 }

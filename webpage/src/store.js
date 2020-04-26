@@ -1,4 +1,5 @@
 import {createStore, applyMiddleware} from 'redux'
+import logger from 'redux-logger'
 import thunk from 'redux-thunk'
 import {PERFORM_REQUEST, API_ERROR, GOT_RESULTS} from './actions'
 
@@ -40,4 +41,4 @@ const reducer = (state = {}, action) => {
     }
 }
 
-export default createStore(reducer, preloadedState, applyMiddleware(thunk))
+export default createStore(reducer, preloadedState, applyMiddleware(thunk, logger))

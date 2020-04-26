@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
+import fetchRecommendations from './recommendations'
 import axios from 'axios'
 import './App.css'
 
-// function Search() {
+// const Search = () => {
 //   return (
 //     <form className="Search">
 //       <label className="search-box">
@@ -13,7 +14,7 @@ import './App.css'
 //   )
 // }
 
-function Recommendation(props){
+const Recommendation = (props) => {
   return (
     <div className="recommendation">
       <h3>{"r/" + props.subreddit}</h3>
@@ -22,7 +23,7 @@ function Recommendation(props){
   )
 }
 
-function App() {
+const App = () => {
   const [data, setData] = useState(0)
   const [query, setQuery] = useState('jess2187')
   const [url, setUrl] = useState(
@@ -90,4 +91,4 @@ function App() {
   )
 }
 
-export default App;
+export default App

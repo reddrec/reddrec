@@ -8,17 +8,6 @@
   font-size: calc(10px + 2vmin);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .Header {
   background-color: cornflowerblue;
   color: white;
@@ -26,7 +15,7 @@
   padding: 20px;
 }
 
-.Search{
+.Search {
   display: flex;
   justify-content: center;
   padding: 15px;
@@ -36,22 +25,18 @@
 }
  
 .search-box {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
   background-color: #f2f2f2;
   background: #FBFBFB;
-    border: 1px solid #EAEAEA;
-    border-radius: 4px;
-    height: 27px;
-    margin-top: 8px;
-    font-size: 14px;
+  border: 1px solid #EAEAEA;
+  border-radius: 4px;
+  height: 27px;
+  margin-top: 8px;
+  font-size: 14px;
   width: 40%;
   padding: 10px;
 }
  
 .search-input {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
   background-color: transparent;
   border: 0px;
@@ -70,16 +55,12 @@
 
 .recommendation {
   display: flex;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
   background-color: cornflowerblue;
   color: white;
-    /* border: 1px solid #EAEAEA; */
-    border-radius: 4px;
-    height: 27px;
-    margin-top: 8px;
-    font-size: 20px;
-  /* width: 40%; */
+  border-radius: 4px;
+  height: 27px;
+  margin-top: 8px;
+  font-size: 20px;
   padding: 10px;
   align-items: center;
   justify-content: center;

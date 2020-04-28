@@ -27,8 +27,8 @@
  
 .SearchBox {
   background-color: #f2f2f2;
-  background: #FBFBFB;
-  border: 1px solid #EAEAEA;
+  background: #fbfbfb;
+  border: 1px solid #eaeaea;
   border-radius: 4px;
   height: 27px;
   margin-top: 8px;
@@ -48,23 +48,61 @@
   width: 100%;
 }
 
-.okButton {
-  background-color: transparent;
-  border: 0px;
-  margin: 5px;
-}
-
-.recommendation {
+.Recommendation {
   display: flex;
   background-color: cornflowerblue;
-  color: white;
+  color: black;
   border-radius: 4px;
-  height: 27px;
+  /* height: 27px; */
   margin-top: 8px;
   font-size: 20px;
-  padding: 10px;
+  padding: 10px 20px;
+
   align-items: center;
   justify-content: center;
+  /* flex-direction: column; */
 }
 
+.overlay {
+  z-index: 98;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.modal {
+  z-index: 99;
+  /* Everything below is optional styling */
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  max-height: 100%;
+  margin: 0 auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: -24px;
+  right: 0;
+  padding: 5px;
+  border: 0;
+  -webkit-appearance: none;
+  background: none;
+  color: white;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 20px 24px;
+  border-radius: 4px;
+  background-color: white;
+}
 

@@ -1,11 +1,12 @@
 import React, {useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import fetchRecommendations from './recommendations'
+import {resetGlobalState} from './actions'
 import './App.css'
 
 
 const Search = () => {
-  const [query, setQuery] = useState('jess2187')
+  const [query, setQuery] = useState('')
   const dispatch = useDispatch()
   
   return (
@@ -17,9 +18,12 @@ const Search = () => {
         <div className="SearchBox">
           <input
             className="SearchInput"
+            autoCorrect="off"
+            spellCheck="false"
             type="text"
+            autoFocus
             value = {query}
-            placeholder="Username"
+            placeholder="Your Reddit Username"
             onChange={event => setQuery(event.target.value)}
           />
         </div>
@@ -27,37 +31,46 @@ const Search = () => {
   )
 }
 
-
 const Recommendations = (props) => {
   return (
     props.recs && props.recs.recommendations.map((item, i) => (
-      <Recommendation key ={i} subreddit={item.subreddit} confidence={item.confidence} />
+      <Recommendation key={i} subreddit={item.subreddit} confidence={item.confidence} />
     ))
   )
 }
 
 const Recommendation = (props) => {
   return (
-    <div className="recommendation">
-      <h3>{"r/" + props.subreddit}</h3>
-      <h4>{"Confidence: " + props.confidence}</h4>
+    <div className="Recommendation">
+      {'r/' + props.subreddit}
+      {'Confidence: ' + props.confidence}
     </div>
   )
 }
 
-const Error = (props) => {
+const Modal = ({ onClose, title, body }) => {
   return (
-    <div>
-      <h3>Something went wrong :(</h3>
+    <div className="overlay">
+      <div className="modal">
+        <button
+          className="modal-close"
+          type="button"
+          onClick={onClose}
+        >
+          X
+        </button>
+        <div className="modal-body">{title+'--'+body}</div>
+      </div>
     </div>
   )
+  // return content
 }
 
 const App = () => {
-  const [query, setQuery] = useState('jess2187')
+  const [query, setQuery] = useState('')
 
   const isLoading = useSelector(state => state.loading)
-  const isError = useSelector(state => state.error)
+  const error = useSelector(state => state.error)
   const username = useSelector(state => state.username)
   const recommendations = useSelector(state => state.recommendations)
 
@@ -72,14 +85,14 @@ const App = () => {
       <Search/>
       
       <div>  
-        {isError && <Error/>}
-
+        { error &&
+          <Modal title={error.cause} body={error.body} onClose={() => dispatch(resetGlobalState())} />
+        }
         { isLoading ? (
           <div>Loading ...</div>
         ) : (
           <div>
             <Recommendations recs={recommendations} />
-            {console.log(recommendations)}
           </div>
         )}
 

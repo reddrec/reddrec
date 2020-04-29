@@ -40,6 +40,7 @@ Feel free to leave the user agent as-is. Don't spoof a browser as that's against
 
 ```
 docker-compose build
+docker-compose run refresh_datadeps
 (cd webpage; npm install)
 ```
 

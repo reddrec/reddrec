@@ -5,15 +5,21 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
   font-family: Arial;
 }
 
 .Header {
-  background-color: cornflowerblue;
+  background-color: #c4554d;
   color: white;
   width: 100%;
   padding: 20px;
+}
+
+.Header > h1{
+  font-size: 4vw;
+}
+.Header > p{
+  font-size: 2vw;
 }
 
 .Search {
@@ -48,22 +54,48 @@
   width: 100%;
 }
 
-.Recommendation {
-  display: flex;
-  background-color: cornflowerblue;
-  color: black;
-  border-radius: 4px;
-  /* height: 27px; */
-  margin-top: 8px;
-  font-size: 20px;
-  padding: 10px 20px;
-
-  align-items: center;
-  justify-content: center;
-  /* flex-direction: column; */
+.Recommendations {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.overlay {
+.Recommendations > h1 {
+  font-size: 3vw;
+}
+
+.Recommendation {
+  display: inline-block;
+  background-color: #c4554d;
+  color: white;
+  border-radius: 4px;
+  margin: 8px 0px 0px 0px;
+  font-size: 20px;
+  padding: 10px 20px;
+  width: 50%;
+}
+
+.Recommendation > h2 {
+  font-size: 1.7vw;
+  margin: 0px;
+  margin-bottom: 5px;
+  
+}
+
+.Recommendation > p {
+  font-size: 1.5vw;
+  margin: 0;
+  margin-top: 7px;
+}
+
+.Recommendation > a {
+  font-size: 1.7vw;
+  margin:0;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.Overlay {
   z-index: 98;
   position: fixed;
   top: 0;
@@ -76,33 +108,50 @@
   height: 100%;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.3);
+  /* filter: blur(2px); */
 }
 
-.modal {
+.Modal {
   z-index: 99;
   /* Everything below is optional styling */
   position: relative;
   width: 100%;
   max-width: 320px;
   max-height: 100%;
-  margin: 0 auto;
+  /* margin: 0 auto; */
 }
 
-.modal-close {
+.ModalClose {
   position: absolute;
-  top: -24px;
-  right: 0;
-  padding: 5px;
+  padding: 12px 15px;
   border: 0;
-  -webkit-appearance: none;
   background: none;
-  color: white;
+  color: black;
   cursor: pointer;
+  right: 0;
+  float: right;
+  font-size:15px;
 }
 
-.modal-body {
-  padding: 20px 24px;
+.ModalBody {
+  /* padding: 20px 24px; */
   border-radius: 4px;
   background-color: white;
+}
+
+.ModalContent {
+  align-items: center;
+  padding: 40px
+}
+
+.ModalContent > h1 {
+  margin: 0px;
+  font-size: 20px;
+}
+
+.ModalContent > h2 {
+  margin: 0px;
+  margin-top: 4px;
+  font-size: 18px;
 }
 

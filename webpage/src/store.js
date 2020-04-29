@@ -31,7 +31,8 @@ const reducer = (state = {}, action) => {
 					cause: action.cause,
 					body: action.body
 				},
-				loading: false
+				loading: false,
+				recommendations: null
 			}
 			
 		case GOT_RESULTS:

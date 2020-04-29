@@ -5,28 +5,24 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  font-family: Arial;
 }
 
 .Header {
-  background-color: cornflowerblue;
+  background-color: #c4554d;
   color: white;
   width: 100%;
   padding: 20px;
 }
 
-.Search{
+.Header > h1{
+  font-size: 4vw;
+}
+.Header > p{
+  font-size: 2vw;
+}
+
+.Search {
   display: flex;
   justify-content: center;
   padding: 15px;
@@ -35,23 +31,19 @@
   align-items: center;
 }
  
-.search-box {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
+.SearchBox {
   background-color: #f2f2f2;
-  background: #FBFBFB;
-    border: 1px solid #EAEAEA;
-    border-radius: 4px;
-    height: 27px;
-    margin-top: 8px;
-    font-size: 14px;
+  background: #fbfbfb;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  height: 27px;
+  margin-top: 8px;
+  font-size: 14px;
   width: 40%;
   padding: 10px;
 }
  
-.search-input {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
+.SearchInput {
   box-sizing: border-box;
   background-color: transparent;
   border: 0px;
@@ -62,27 +54,104 @@
   width: 100%;
 }
 
-.okButton {
-  background-color: transparent;
-  border: 0px;
-  margin: 5px;
+.Recommendations {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.recommendation {
-  display: flex;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  background-color: cornflowerblue;
+.Recommendations > h1 {
+  font-size: 3vw;
+}
+
+.Recommendation {
+  display: inline-block;
+  background-color: #c4554d;
   color: white;
-    /* border: 1px solid #EAEAEA; */
-    border-radius: 4px;
-    height: 27px;
-    margin-top: 8px;
-    font-size: 20px;
-  /* width: 40%; */
-  padding: 10px;
+  border-radius: 4px;
+  margin: 8px 0px 0px 0px;
+  font-size: 20px;
+  padding: 10px 20px;
+  width: 50%;
+}
+
+.Recommendation > h2 {
+  font-size: 1.7vw;
+  margin: 0px;
+  margin-bottom: 5px;
+  
+}
+
+.Recommendation > p {
+  font-size: 1.5vw;
+  margin: 0;
+  margin-top: 7px;
+}
+
+.Recommendation > a {
+  font-size: 1.7vw;
+  margin:0;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.Overlay {
+  z-index: 98;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  /* filter: blur(2px); */
 }
 
+.Modal {
+  z-index: 99;
+  /* Everything below is optional styling */
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  max-height: 100%;
+  /* margin: 0 auto; */
+}
+
+.ModalClose {
+  position: absolute;
+  padding: 12px 15px;
+  border: 0;
+  background: none;
+  color: black;
+  cursor: pointer;
+  right: 0;
+  float: right;
+  font-size:15px;
+}
+
+.ModalBody {
+  /* padding: 20px 24px; */
+  border-radius: 4px;
+  background-color: white;
+}
+
+.ModalContent {
+  align-items: center;
+  padding: 40px
+}
+
+.ModalContent > h1 {
+  margin: 0px;
+  font-size: 20px;
+}
+
+.ModalContent > h2 {
+  margin: 0px;
+  margin-top: 4px;
+  font-size: 18px;
+}
 

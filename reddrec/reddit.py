@@ -43,7 +43,7 @@ def hot_posts(reddit, subreddit_name, n=10):
    subreddit = reddit.subreddit(subreddit_name)
    return list(subreddit.hot(limit=n))
 
-def usernames(reddit, posts):
+def usernames(reddit, posts, up_to=0):
     usernames = set()
 
     for comments in map(lambda p: p.comments.list(), posts):
@@ -51,5 +51,8 @@ def usernames(reddit, posts):
             if type(comment) is praw.models.Comment and comment.author:
                 name = comment.author.name
                 usernames.add(name.lower())
+
+            if up_to > 0 and len(usernames) == up_to:
+                return usernames
 
     return usernames

@@ -34,3 +34,9 @@ def test_usernames(i9n):
         posts = hot_posts(i9n.reddit, 'globaloffensive')
         unique_users = usernames(i9n.reddit, posts)
         assert len(unique_users) == 799
+
+def test_usernames_up_to(i9n):
+    with i9n.recorder.use_cassette('Reddit.usernames_up_to'):
+        posts = hot_posts(i9n.reddit, 'globaloffensive')
+        unique_users = usernames(i9n.reddit, posts, up_to=15)
+        assert len(unique_users) == 15

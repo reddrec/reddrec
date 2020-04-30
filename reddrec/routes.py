@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, make_response, render_template
 from .jobs import process_job, JobStatus
-from .validation import valid_username
+from .reddit import valid_username
 
 bp = Blueprint('routes', __name__)
 

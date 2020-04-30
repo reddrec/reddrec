@@ -1,3 +1,3 @@
-# Output directory for serialized datadeps
-# Is populated by running main script
+# Output directory for generated datadeps
+# Is populated by running main scripts
 gen/

@@ -1,11 +1,12 @@
 import pickle
 import os
+from .utils import lookup_table
 
 class DataDeps:
     _already_setup = False
 
     _subreddits = None
-    _subs_index = dict()
+    _subs_index = None
 
     @staticmethod
     def subreddits():
@@ -43,5 +44,6 @@ class DataDeps:
         if type(DataDeps._subreddits) is not list:
             raise Exception('Subreddits data dep must be a list')
 
-        for i, sub in enumerate(DataDeps._subreddits):
-            DataDeps._subs_index[sub.lower()] = i
+        # Normalize to lower-cased subreddits and build index
+        DataDeps._subreddits = [sub.lower() for sub in DataDeps._subreddits]
+        DataDeps._subs_index = lookup_table(DataDeps._subreddits)

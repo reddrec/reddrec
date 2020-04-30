@@ -1,6 +1,6 @@
 import numpy as np
 from .utils import reddit_from_env
-from .comments import Comments
+from .reddit import Comments
 from .data_deps import DataDeps
 
 def recommend(username, testing_mode):
@@ -25,6 +25,9 @@ def recommend(username, testing_mode):
 
     ratings = c.fetch_ratings(normalize=False)
     sorted_indices = ratings.argsort()[::-1] # Greatest to least order
+
+    # TODO: extract recommender function so we can have library code that is
+    # independent of DataDeps
     subs = DataDeps.subreddits()
 
     mk_recommendation = lambda i: { 'subreddit': subs[i], 'confidence': ratings[i] }

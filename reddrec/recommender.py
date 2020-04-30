@@ -1,6 +1,6 @@
 import numpy as np
 from .utils import reddit_from_env
-from .comments import Comments
+from .reddit import Comments
 from .data_deps import DataDeps
 
 def recommend(username, testing_mode):

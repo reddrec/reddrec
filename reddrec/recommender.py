@@ -25,6 +25,9 @@ def recommend(username, testing_mode):
 
     ratings = c.fetch_ratings(normalize=False)
     sorted_indices = ratings.argsort()[::-1] # Greatest to least order
+
+    # TODO: extract recommender function so we can have library code that is
+    # independent of DataDeps
     subs = DataDeps.subreddits()
 
     mk_recommendation = lambda i: { 'subreddit': subs[i], 'confidence': ratings[i] }

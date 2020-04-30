@@ -1,20 +1,33 @@
 import praw
 import numpy as np
-from .data_deps import DataDeps
 
 class Comments:
 
-    def __init__(self, reddit, username):
+    def __init__(self, reddit, username, subreddits=None):
+
         self.reddit = reddit
         self.user = reddit.redditor(username)
 
+        if subreddits:
+            from .utils import lookup_table
+            self.subreddits = subreddits
+            self.subs_index = lookup_table(subreddits)
+        else:
+            from .data_deps import DataDeps
+            self.subreddits = DataDeps.subreddits()
+            self.subs_index = DataDeps.subs_index()
+
     def fetch_ratings(self, n_comments=1000, normalize=True):
+        """
+        Create ratings row vector for the user based on their comment history
+        """
+
         recents = self.fetch_recent(n_comments)
         comment_subs = map(lambda r: r.subreddit.display_name.lower(), recents)
-        vec = np.zeros(len(DataDeps.subreddits()))
+        vec = np.zeros(len(self.subreddits))
 
         for sub in comment_subs:
-            idx = DataDeps.subs_index().get(sub)
+            idx = self.subs_index.get(sub)
             if idx is not None:
                 vec[idx] += 1
 

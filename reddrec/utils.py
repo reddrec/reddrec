@@ -23,3 +23,6 @@ def reddit_from_env():
         password=password,
         user_agent=user_agent
     )
+
+def lookup_table(xs):
+    return {x : i for i, x in enumerate(xs)}

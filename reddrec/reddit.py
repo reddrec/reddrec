@@ -38,3 +38,18 @@ class Comments:
 
     def fetch_recent(self, n):
         return list(self.user.comments.new(limit=n))
+
+def hot_posts(reddit, subreddit_name, n=10):
+   subreddit = reddit.subreddit(subreddit_name)
+   return list(subreddit.hot(limit=n))
+
+def usernames(reddit, posts):
+    usernames = set()
+
+    for comments in map(lambda p: p.comments.list(), posts):
+        for comment in comments:
+            if type(comment) is praw.models.Comment and comment.author:
+                name = comment.author.name
+                usernames.add(name.lower())
+
+    return usernames

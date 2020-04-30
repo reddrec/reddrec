@@ -1,4 +1,4 @@
-from reddrec.reddit import Comments
+from reddrec.reddit import Comments, hot_posts, usernames
 import numpy as np
 
 def test_fetch_recent(i9n):
@@ -21,3 +21,16 @@ def test_fetch_ratings(i9n):
         ratings2 = c.fetch_ratings(n_comments=200)
         norm2 = np.linalg.norm(ratings2)
         np.testing.assert_almost_equal(norm2, 1.0)
+
+def test_hot_posts(i9n):
+    with i9n.recorder.use_cassette('Reddit.hot_posts'):
+        posts = hot_posts(i9n.reddit, 'globaloffensive')
+        assert(len(posts) == 10)
+        assert(posts[0].id == 'g5eht2')
+        assert(posts[-1].id == 'gamfpm')
+
+def test_usernames(i9n):
+    with i9n.recorder.use_cassette('Reddit.usernames'):
+        posts = hot_posts(i9n.reddit, 'globaloffensive')
+        unique_users = usernames(i9n.reddit, posts)
+        assert len(unique_users) == 799

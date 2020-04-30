@@ -1,5 +1,6 @@
 import praw
 import numpy as np
+import re
 
 class Comments:
 
@@ -56,3 +57,20 @@ def usernames(reddit, posts, up_to=0):
                 return usernames
 
     return usernames
+
+
+VALID_USER_REGEXP = re.compile('[a-zA-Z\\-_\\d]+')
+
+def valid_username(username):
+    """
+    We only want to process valid Reddit usernames.
+    Rules found at: https://www.reddit.com/register
+    """
+
+    if not (3 <= len(username) <= 20):
+        return False
+
+    if VALID_USER_REGEXP.fullmatch(username) is None:
+        return False
+
+    return True

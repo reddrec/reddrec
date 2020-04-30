@@ -16,9 +16,6 @@ def reddit_from_env():
     password = os.environ['reddrec_praw_password']
     user_agent = os.environ['reddrec_praw_user_agent']
 
-    if not (client_id and client_secret and username and password and user_agent):
-        raise Exception('Missing a Reddit environment variable!')
-
     return praw.Reddit(
         client_id=client_id,
         client_secret=client_secret,

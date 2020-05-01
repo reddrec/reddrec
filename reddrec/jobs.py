@@ -4,7 +4,6 @@ from flask.json import dumps
 from redis import Redis
 from rq import Queue
 from .utils import is_flask_in_testing_mode
-from .recommender import recommend
 
 # Store processed results for 6 hours
 RESULTS_TTL = 6 * 60 * 60
@@ -80,7 +79,7 @@ def process_job(username):
 
     if not rq_job:
         testing = is_flask_in_testing_mode()
-        rq_job = queue.enqueue(recommend, username, testing, job_id=job_id(username))
+        rq_job = queue.enqueue(recommender_job, username, testing, job_id=job_id(username))
 
     if rq_job.is_finished:
         if rq_job.result is None:
@@ -101,3 +100,42 @@ def process_job(username):
         return Job(JobStatus.FAILED_UNKNOWN_CAUSE)
 
     return Job(JobStatus.PROCESSING)
+
+# Do not call this function directly: RQ handles its execution.
+def recommender_job(username, testing_mode):
+    """
+    Entry function for performing recommendations.
+
+    Performs subreddit recommendations for Reddit user given by username.
+
+    Returns dict of recommendations if they could be found.
+    Returns None when user does not exist.
+    """
+
+    from .data_deps import DataDeps
+    from .utils import reddit_from_env
+    from .recommender import Recommender
+
+    reddit = None
+
+    if testing_mode:
+        # Safe since testing mode uses a synchronous queue that has access to
+        # the Flask current_app object.
+        from flask import current_app
+        reddit = current_app.config.get('prawtest_reddit')
+    else:
+        reddit = reddit_from_env()
+
+    subreddits = DataDeps.subreddits()
+    matrix = DataDeps.matrix()
+
+    r = Recommender(reddit, username, subreddits, matrix)
+    r.perform()
+
+    if not r.user_exists():
+        return None
+
+    return {
+        'username': username,
+        'recommendations': r.recommendations()
+    }

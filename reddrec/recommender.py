@@ -1,40 +1,36 @@
 import numpy as np
-from .utils import reddit_from_env
 from .reddit import Comments
-from .data_deps import DataDeps
 
-def recommend(username, testing_mode):
-    """
-    Performs subreddit recommendations for Reddit user given by username.
+class Recommender:
 
-    Returns dict of recommendations if they could be found.
-    Returns None when recommendations cannot be made (e.g. user doesn't exist).
-    """
+    def __init__(self, reddit, username, subreddits, matrix):
+        self.reddit = reddit
+        self.username = username
+        self.subreddits = subreddits
+        self.matrix = matrix
+        self._user_exists = False
+        self._recommendations = None
 
-    reddit = None
+    def perform(self):
+        pass
 
-    if testing_mode:
-        # Safe since testing mode uses a synchronous queue that has access to
-        # the Flask current_app object.
-        from flask import current_app
-        reddit = current_app.config.get('prawtest_reddit')
-    else:
-        reddit = reddit_from_env()
+    def user_exists(self):
+        # return self._user_exists
+        return True
 
-    c = Comments(reddit, username)
-
-    ratings = c.fetch_ratings(normalize=False)
-    sorted_indices = ratings.argsort()[::-1] # Greatest to least order
-
-    # TODO: extract recommender function so we can have library code that is
-    # independent of DataDeps
-    subs = DataDeps.subreddits()
-
-    mk_recommendation = lambda i: { 'subreddit': subs[i], 'confidence': ratings[i] }
-
-    top_3 = [mk_recommendation(i) for i in sorted_indices[:3]]
-
-    return {
-        'username': username,
-        'recommendations': top_3
-    }
+    def recommendations(n=3):
+        # return self._recommendations
+        return [
+            {
+                'subreddit': 'pi',
+                'confidence': 3.1415927
+            },
+            {
+                'subreddit': 'phi',
+                'confidence': 1.61803399
+            },
+            {
+                'subreddit': 'e',
+                'confidence': 2.7182818
+            },
+        ]

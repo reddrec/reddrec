@@ -19,7 +19,13 @@ def test_recommend_is_completed(i9n, client):
 
         json = loads(rv.data)
         assert json['username'] == 'gabenewellbellevue'
-        assert len(json['recommendations']) == 3
+        assert type(json['recommendations']) is list
+        assert len(json['recommendations']) == 5
+
+        for r in json['recommendations']:
+            from numbers import Number
+            assert isinstance(r['confidence'], Number)
+            assert isinstance(r['subreddit'], str)
 
 def test_recommend_is_processing(i9n, async_client):
     with i9n.recorder.use_cassette('Routes.recommend_is_processing'):

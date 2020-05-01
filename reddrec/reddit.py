@@ -1,22 +1,15 @@
 import praw
 import numpy as np
 import re
+from .data_deps import DataDeps
 
 class Comments:
 
     def __init__(self, reddit, username, subreddits=None):
+        DataDeps.inject(self, subreddits=subreddits)
 
         self.reddit = reddit
         self.user = reddit.redditor(username)
-
-        if subreddits:
-            from .utils import lookup_table
-            self.subreddits = subreddits
-            self.subs_index = lookup_table(subreddits)
-        else:
-            from .data_deps import DataDeps
-            self.subreddits = DataDeps.subreddits()
-            self.subs_index = DataDeps.subs_index()
 
     def fetch_ratings(self, n_comments=1000, normalize=True):
         """

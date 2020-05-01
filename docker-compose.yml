@@ -7,6 +7,7 @@ services:
     depends_on:
       - redis
       - rqworker
+      - datadeps
     volumes:
       - .:/app
     environment:
@@ -31,6 +32,7 @@ services:
     build: .
     depends_on:
       - redis
+      - datadeps
     volumes:
       - .:/app
     command: bash -c 'rq worker --url redis://:@redis:6379'
@@ -42,6 +44,8 @@ services:
       - reddrec_praw_user_agent
   test:
     build: .
+    depends_on:
+      - datadeps
     volumes:
       - .:/app
     command: bash -c 'python -m pytest tests/'
@@ -56,3 +60,8 @@ services:
     volumes:
       - .:/app
     command: 'python datadeps -retry'
+  datadeps:
+    build: .
+    volumes:
+      - .:/app
+    command: 'python datadeps'

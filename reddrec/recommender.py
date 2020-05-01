@@ -1,13 +1,14 @@
 import numpy as np
 from .reddit import Comments
+from .data_deps import DataDeps
 
 class Recommender:
 
-    def __init__(self, reddit, username, subreddits, matrix):
+    def __init__(self, reddit, username, subreddits=None, matrix=None):
+        DataDeps.inject(self, subreddits=subreddits, matrix=matrix)
+
         self.reddit = reddit
         self.username = username
-        self.subreddits = subreddits
-        self.matrix = matrix
         self._user_exists = False
         self._recommendations = None
 

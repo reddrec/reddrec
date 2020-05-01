@@ -45,3 +45,27 @@ def test_setup_and_teardown(mock_deps):
     mock_deps2['subreddits'].insert(0, 'TF2')
     DataDeps.setup(mock_deps2)
     assert DataDeps.subreddits()[0] == 'tf2'
+
+def test_inject(mock_deps):
+    DataDeps.setup(mock_deps)
+
+    class Dummy:
+        def __init__(self, subreddits=None, matrix=None):
+            DataDeps.inject(self, subreddits=subreddits, matrix=matrix)
+
+    dummy1 = Dummy()
+    assert dummy1.subreddits is DataDeps.subreddits()
+    assert dummy1.subs_index is DataDeps.subs_index()
+    assert dummy1.matrix is DataDeps.matrix()
+
+    dummy2 = Dummy(subreddits=['LearnPython'])
+    assert dummy2.subreddits == ['LearnPython']
+    assert dummy2.subs_index == { 'LearnPython': 0 }
+    assert dummy2.matrix is DataDeps.matrix()
+
+    dummy3_mat = [[1, 2, 3],
+                  [4, 5, 6]]
+    dummy3 = Dummy(matrix=dummy3_mat)
+    assert dummy3.subreddits is DataDeps.subreddits()
+    assert dummy3.subs_index is DataDeps.subs_index()
+    assert dummy3.matrix is dummy3_mat

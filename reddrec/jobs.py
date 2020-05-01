@@ -3,7 +3,8 @@ from fakeredis import FakeStrictRedis
 from flask.json import dumps
 from redis import Redis
 from rq import Queue
-from .utils import is_flask_in_testing_mode
+from .utils import is_flask_in_testing_mode, reddit_from_env
+from .recommender import Recommender
 
 # Store processed results for 6 hours
 RESULTS_TTL = 6 * 60 * 60
@@ -112,10 +113,6 @@ def recommender_job(username, testing_mode):
     Returns None when user does not exist.
     """
 
-    from .data_deps import DataDeps
-    from .utils import reddit_from_env
-    from .recommender import Recommender
-
     reddit = None
 
     if testing_mode:
@@ -126,10 +123,7 @@ def recommender_job(username, testing_mode):
     else:
         reddit = reddit_from_env()
 
-    subreddits = DataDeps.subreddits()
-    matrix = DataDeps.matrix()
-
-    r = Recommender(reddit, username, subreddits, matrix)
+    r = Recommender(reddit, username)
     r.perform()
 
     if not r.user_exists():

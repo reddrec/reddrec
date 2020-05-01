@@ -42,6 +42,26 @@ class DataDeps:
         return DataDeps._matrix
 
     @staticmethod
+    def inject(instance, subreddits=None, matrix=None):
+        """
+        Inject data-dependencies into instance for missing kwargs.
+
+        TODO: make this a decorator? hide above methods in favor of this?
+        """
+
+        if subreddits:
+            instance.subreddits = subreddits
+            instance.subs_index = lookup_table(subreddits)
+        else:
+            instance.subreddits = DataDeps.subreddits()
+            instance.subs_index = DataDeps.subs_index()
+
+        if matrix:
+            instance.matrix = matrix
+        else:
+            instance.matrix = DataDeps.matrix()
+
+    @staticmethod
     def setup(deps={}):
         """
         There are some data dependencies that are required for the server to

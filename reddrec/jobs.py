@@ -126,10 +126,10 @@ def recommender_job(username, testing_mode):
     r = Recommender(reddit, username)
     r.perform()
 
-    if not r.user_exists():
+    if not r.redditor_found:
         return None
 
     return {
         'username': username,
-        'recommendations': r.recommendations()
+        'recommendations': r.recommendations
     }

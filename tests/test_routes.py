@@ -20,7 +20,7 @@ def test_recommend_is_completed(i9n, client):
         json = loads(rv.data)
         assert json['username'] == 'gabenewellbellevue'
         assert type(json['recommendations']) is list
-        assert len(json['recommendations']) == 3
+        assert len(json['recommendations']) == 5
 
         for r in json['recommendations']:
             from numbers import Number

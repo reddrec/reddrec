@@ -1,6 +1,12 @@
 import pytest
 import tests.praw.integration as praw_i9n
 from reddrec import create_app
+from reddrec.data_deps import DataDeps
+
+@pytest.fixture(autouse=True)
+def always_teardown_data_deps():
+    yield
+    DataDeps.teardown()
 
 @pytest.fixture
 def test_config(i9n):

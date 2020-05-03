@@ -24,12 +24,12 @@ class Recommender:
             # The user could not be found on Reddit
             return
 
-        # TODO: Maybe normalize the ratings. Currently rows DataDeps.matrix() are not
-        # normalized so we do not normalize in fetch_ratings.
-
         user_ratings = c.fetch_ratings(normalize=False)
-        neighbor_ratings = self._most_similar_row(user_ratings)
-        non_visited = self._filter_visited(user_ratings, neighbor_ratings)
+        pred_ratings = self._predict_ratings(user_ratings)
+
+        # neighbor_ratings = self._most_similar_row(user_ratings)
+
+        non_visited = self._filter_visited(user_ratings, pred_ratings)
 
         # Sort in decreasing order by rating
         recommendations = sorted(non_visited, key=lambda tup: -tup[1])
@@ -74,10 +74,10 @@ class Recommender:
 
         return a.dot(b) / (A * B)
 
-    def _filter_visited(self, user_ratings, neighbor_ratings):
+    def _filter_visited(self, user_ratings, pred_ratings, thresh=0.001):
         """
-        Get a new list of (subreddit, neighbor_rating) only where the
-        corresponding user rating is zero and the neighbor rating is non-zero.
+        Get a new list of (subreddit, pred_rating) only where the
+        corresponding user_rating is zero.
 
         The end result is a list containing candidate recommendations.
         """
@@ -85,8 +85,8 @@ class Recommender:
         non_visited = []
 
         for i, rating in enumerate(user_ratings):
-            if rating == 0 and neighbor_ratings[i] != 0:
-                non_visited.append((self.subreddits[i], neighbor_ratings[i]))
+            if rating == 0 and pred_ratings[i] > thresh:
+                non_visited.append((self.subreddits[i], pred_ratings[i]))
 
         return non_visited
 
@@ -100,3 +100,15 @@ class Recommender:
     def _reset(self):
         self._redditor_found = False
         self._recommendations = None
+
+    def _predict_ratings(self, new_row, k=7):
+        A = np.vstack((self.matrix, new_row))
+
+        U, S, V_T = np.linalg.svd(A, full_matrices=False)
+
+        # Select top k latent features
+        U = U[:, :k]
+        S = np.diag(S[:k])
+        V = V_T[:k, :].T
+
+        return (U @ S @ V.T)[-1]

@@ -24,7 +24,7 @@ class Recommender:
             # The user could not be found on Reddit
             return
 
-        user_ratings = c.fetch_ratings(normalize=False)
+        user_ratings = (c.fetch_ratings(normalize=False) >= 1).astype(float)
         pred_ratings = self._predict_ratings(user_ratings)
 
         # neighbor_ratings = self._most_similar_row(user_ratings)

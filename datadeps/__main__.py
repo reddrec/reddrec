@@ -40,11 +40,16 @@ def main():
     if refetch_matrix:
         matrix = fetch_matrix(subreddits)
         np.savetxt(f'{rel}/{MATRIX_CSV}', matrix, fmt='%d', delimiter=',')
-        write(f'{output_dir}/matrix.pickle', matrix)
+        write_normalized(f'{output_dir}/matrix.pickle', matrix)
     else:
-        write(f'{output_dir}/matrix.pickle', pd.read_csv(f'{rel}/{MATRIX_CSV}').values)
+        write_normalized(f'{output_dir}/matrix.pickle', pd.read_csv(f'{rel}/{MATRIX_CSV}').values)
 
     log('Done!')
+
+# Normalize rows of matrix before serializing
+def write_normalized(path, matrix):
+    n_matrix = (matrix >= 1).astype(float)
+    write(path, n_matrix)
 
 def write(path, obj):
     with open(path, 'wb') as f:

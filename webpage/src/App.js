@@ -7,11 +7,11 @@ import './App.css'
 const Search = ({isLoading}) => {
   const [query, setQuery] = useState('')
   const dispatch = useDispatch()
-  
+
   return (
-    <form className='Search' 
+    <form className='Search'
         onSubmit={event => {
-          dispatch(fetchRecommendations(query)) 
+          dispatch(fetchRecommendations(query))
           event.preventDefault()
       }}>
         <div className='SearchBox'>
@@ -35,7 +35,7 @@ const Modal = ({ onClose, title, body }) => {
   return (
     <div className='Overlay'>
       <div className='Modal'>
-        
+
         <div className='ModalBody'>
           <button
             className='ModalClose'
@@ -57,6 +57,10 @@ const Modal = ({ onClose, title, body }) => {
 }
 
 const Recommendations = (props) => {
+  if (props.recs && props.recs.recommendations.length == 0) {
+    return <h2>Sorry, that user isn't much of a gamer.</h2>
+  }
+
   const rec = props.recs && props.recs.recommendations.map((item, i) => (
     <Recommendation key={i} subreddit={item.subreddit} confidence={item.confidence} />
   ))
@@ -91,8 +95,8 @@ const App = () => {
         <p>Find new gaming subreddits!</p>
       </div>
       <Search isLoading={isLoading}/>
-      
-      <div>  
+
+      <div>
         { error &&
           <Modal title={error.cause} body={error.body} onClose={() => dispatch(resetGlobalState())} />
         }
@@ -100,7 +104,6 @@ const App = () => {
           <img src='../loading-png-gif.gif' height='50' width='50'></img>
         ) : (
           <div>
-
             <Recommendations recs={recommendations} />
           </div>
         )}
